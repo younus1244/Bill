@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-  }
-  #bill-container {
-    width: 300px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-  }
-  #watermark {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 60px;
-    color: rgba(0, 0, 0, 0.1);
-    pointer-events: none;
-  }
-</style>
+  <title>PDF Bill Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
 </head>
 <body>
-<div id="bill-container">
-  <h2>Watermark Bill Generator</h2>
-  <input type="text" id="item" placeholder="Item">
-  <input type="number" id="qty" placeholder="Qty">
-  <input type="number" id="amount" placeholder="Amount">
-  <button onclick="generateBill()">Generate Bill</button>
-  <div id="watermark">WATERMARK</div>
-  <div id="bill"></div>
-</div>
-
-<script>
-function generateBill() {
-  const item = document.getElementById("item").value;
-  const qty = document.getElementById("qty").value;
-  const amount = document.getElementById("amount").value;
-
-  const billDiv = document.getElementById("bill");
-  billDiv.innerHTML = `
-    <h3>Generated Bill:</h3>
-    <p><strong>Item:</strong> ${item}</p>
-    <p><strong>Quantity:</strong> ${qty}</p>
-    <p><strong>Amount:</strong> $${amount}</p>
-  `;
-}
-</script>
+  <h1>PDF Bill Generator</h1>
+  
+  <table>
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Amount</th>
+    </tr>
+    <tr>
+      <td>Item 1</td>
+      <td><input type="number" class="quantity" value="1"></td>
+      <td><input type="number" class="amount" value="10"></td>
+    </tr>
+    <tr>
+      <td>Item 2</td>
+      <td><input type="number" class="quantity" value="2"></td>
+      <td><input type="number" class="amount" value="20"></td>
+    </tr>
+  </table>
+  
+  <button onclick="generatePDF()">Generate PDF</button>
+  
+  <script>
+    function generatePDF() {
+      const doc = new jsPDF();
+      const table = document.querySelector("table");
+      const rows = table.querySelectorAll("tr");
+      
+      let startY = 20;
+      
+      doc.text("Invoice", 105, startY);
+      startY += 10;
+      
+      doc.autoTable({
+        startY,
+        head: [['Item', 'Quantity', 'Amount']],
+        body: Array.from(rows).map(row => {
+          const columns = row.querySelectorAll("td");
+          return [columns[0].textContent, columns[1].querySelector(".quantity").value, columns[2].querySelector(".amount").value];
+        })
+      });
+      
+      doc.save("invoice.pdf");
+    }
+  </script>
 </body>
-</html> 
+</html>
+ 
