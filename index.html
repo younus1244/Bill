@@ -3,75 +3,52 @@
 <head>
 <style>
   body {
-    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
   }
-  #bill {
-    border: 1px solid #000;
-    padding: 10px;
-    width: 300px;
+  .ball {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #3498db;
+    position: relative;
+  }
+  .inner-circle {
+    width: 60px;
+    height: 60px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>
 </head>
 <body>
-  <div id="bill">
-    <h2>Invoice</h2>
-    <table>
-      <tr>
-        <th>Item</th>
-        <th>Qty</th>
-        <th>Amount</th>
-      </tr>
-      <tr>
-        <td><input type="text" id="item1"></td>
-        <td><input type="number" id="qty1"></td>
-        <td><input type="number" id="amount1"></td>
-      </tr>
-      <tr>
-        <td><input type="text" id="item2"></td>
-        <td><input type="number" id="qty2"></td>
-        <td><input type="number" id="amount2"></td>
-      </tr>
-      <tr>
-        <td><input type="text" id="item2"></td>
-        <td><input type="number" id="qty2"></td>
-        <td><input type="number" id="amount2"></td>
-      </tr>
-      <!-- Add more rows as needed -->
-    </table>
-    <button onclick="generateBill()">Generate Bill</button>
-    <img id="billImage" style="display: none;">
+  <div class="ball">
+    <div class="inner-circle"></div>
   </div>
 
   <script>
-    function generateBill() {
-      const items = [];
-      for (let i = 1; i <= 2; i++) {
-        const item = document.getElementById(`item${i}`).value;
-        const qty = document.getElementById(`qty${i}`).value;
-        const amount = document.getElementById(`amount${i}`).value;
-        items.push({ item, qty, amount });
-      }
+    const ball = document.querySelector(".ball");
+    const innerCircle = document.querySelector(".inner-circle");
 
-      const billImage = document.getElementById("billImage");
-      const canvas = document.createElement("canvas");
-      canvas.width = 300;
-      canvas.height = 300;
-      const context = canvas.getContext("2d");
+    ball.addEventListener("mouseenter", () => {
+      innerCircle.style.width = "80px";
+      innerCircle.style.height = "80px";
+      innerCircle.style.transition = "all 0.3s";
+    });
 
-      context.font = "bold 14px Arial";
-      context.fillText("Invoice", 100, 20);
-
-      let yPos = 50;
-      items.forEach(item => {
-        context.fillText(item.item, 10, yPos);
-        context.fillText(item.qty, 120, yPos);
-        context.fillText(item.amount, 220, yPos);
-        yPos += 30;
-      });
-
-      billImage.src = canvas.toDataURL("image/png");
-      billImage.style.display = "block";
-    }
+    ball.addEventListener("mouseleave", () => {
+      innerCircle.style.width = "60px";
+      innerCircle.style.height = "60px";
+      innerCircle.style.transition = "all 0.3s";
+    });
   </script>
 </body>
-</html> 
+</html>
