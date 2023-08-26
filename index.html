@@ -1,55 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PDF Bill Generator</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  #bill {
+    border: 1px solid #000;
+    padding: 10px;
+    width: 300px;
+  }
+</style>
 </head>
 <body>
-  <h1>PDF Bill Generator</h1>
-  
-  <table>
-    <tr>
-      <th>Item</th>
-      <th>Quantity</th>
-      <th>Amount</th>
-    </tr>
-    <tr>
-      <td>Item 1</td>
-      <td><input type="number" class="quantity" value="1"></td>
-      <td><input type="number" class="amount" value="10"></td>
-    </tr>
-    <tr>
-      <td>Item 2</td>
-      <td><input type="number" class="quantity" value="2"></td>
-      <td><input type="number" class="amount" value="20"></td>
-    </tr>
-  </table>
-  
-  <button onclick="generatePDF()">Generate PDF</button>
-  
+  <div id="bill">
+    <h2>Invoice</h2>
+    <table>
+      <tr>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Amount</th>
+      </tr>
+      <tr>
+        <td><input type="text" id="item1"></td>
+        <td><input type="number" id="qty1"></td>
+        <td><input type="number" id="amount1"></td>
+      </tr>
+      <tr>
+        <td><input type="text" id="item2"></td>
+        <td><input type="number" id="qty2"></td>
+        <td><input type="number" id="amount2"></td>
+      </tr>
+      <!-- Add more rows as needed -->
+    </table>
+    <button onclick="generateBill()">Generate Bill</button>
+    <img id="billImage" style="display: none;">
+  </div>
+
   <script>
-    function generatePDF() {
-      const doc = new jsPDF();
-      const table = document.querySelector("table");
-      const rows = table.querySelectorAll("tr");
-      
-      let startY = 20;
-      
-      doc.text("Invoice", 105, startY);
-      startY += 10;
-      
-      doc.autoTable({
-        startY,
-        head: [['Item', 'Quantity', 'Amount']],
-        body: Array.from(rows).map(row => {
-          const columns = row.querySelectorAll("td");
-          return [columns[0].textContent, columns[1].querySelector(".quantity").value, columns[2].querySelector(".amount").value];
-        })
+    function generateBill() {
+      const items = [];
+      for (let i = 1; i <= 2; i++) {
+        const item = document.getElementById(`item${i}`).value;
+        const qty = document.getElementById(`qty${i}`).value;
+        const amount = document.getElementById(`amount${i}`).value;
+        items.push({ item, qty, amount });
+      }
+
+      const billImage = document.getElementById("billImage");
+      const canvas = document.createElement("canvas");
+      canvas.width = 300;
+      canvas.height = 300;
+      const context = canvas.getContext("2d");
+
+      context.font = "bold 14px Arial";
+      context.fillText("Invoice", 100, 20);
+
+      let yPos = 50;
+      items.forEach(item => {
+        context.fillText(item.item, 10, yPos);
+        context.fillText(item.qty, 120, yPos);
+        context.fillText(item.amount, 220, yPos);
+        yPos += 30;
       });
-      
-      doc.save("invoice.pdf");
+
+      billImage.src = canvas.toDataURL("image/png");
+      billImage.style.display = "block";
     }
   </script>
 </body>
-</html>
- 
+</html> 
