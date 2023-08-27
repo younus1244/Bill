@@ -11,26 +11,26 @@
     perspective: 800px;
   }
   .cube {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     position: relative;
     transform-style: preserve-3d;
     animation: rotate 10s linear infinite;
   }
   .face {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     position: absolute;
-    background: img src="Echo.jpg" no-repeat;
+    background: url("ECHO.jpg") no-repeat;
     background-size: cover;
     opacity: 0.8;
   }
-  .front { transform: translateZ(50px); }
-  .back { transform: translateZ(-50px) rotateY(180deg); }
-  .right { transform: rotateY(90deg) translateZ(50px); }
-  .left { transform: rotateY(-90deg) translateZ(50px); }
-  .top { transform: rotateX(90deg) translateZ(50px); }
-  .bottom { transform: rotateX(-90deg) translateZ(50px); }
+  .front { transform: translateZ(75px); }
+  .back { transform: translateZ(-75px) rotateY(180deg); }
+  .right { transform: rotateY(90deg) translateZ(75px); }
+  .left { transform: rotateY(-90deg) translateZ(75px); }
+  .top { transform: rotateX(90deg) translateZ(75px); }
+  .bottom { transform: rotateX(-90deg) translateZ(75px); }
 
   @keyframes rotate {
     0% { transform: rotateY(0deg); }
